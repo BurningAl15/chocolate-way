@@ -20,6 +20,13 @@ public class LevelMap
     public int xSize;
     public int ySize;
     public TextAsset textAsset;
+
+    public void Init()
+    {
+        string[] rows = Regex.Split(textAsset.text, "\r\n|\r|\n");
+        xSize = rows.Length;
+        ySize = rows[0].Length;
+    }
 }
 
 public class TilesetManager : MonoBehaviour
@@ -90,6 +97,7 @@ public class TilesetManager : MonoBehaviour
 
     void SetupBoard()
     {
+        mapfiles[levelIndex].Init();
         xSize = mapfiles[levelIndex].xSize;
         ySize = mapfiles[levelIndex].ySize;
 

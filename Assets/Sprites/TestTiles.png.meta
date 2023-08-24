@@ -63,7 +63,7 @@ TextureImporter:
       213: 3194612806801376496
     second: TestTiles_19
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -84,6 +84,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -122,6 +123,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -173,6 +175,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 1
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
@@ -616,6 +630,27 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      TestTiles_0: 9185039355657243952
+      TestTiles_1: -804471427167591691
+      TestTiles_10: 2328938420410193141
+      TestTiles_11: 6841271800181818709
+      TestTiles_12: 992722527391492195
+      TestTiles_13: 2999401783725310146
+      TestTiles_14: 6612405793781794968
+      TestTiles_15: -8104660695373247494
+      TestTiles_16: -2439351578560270593
+      TestTiles_17: 3821558914350778451
+      TestTiles_18: -891259544060611663
+      TestTiles_19: 3194612806801376496
+      TestTiles_2: -1786184230116508060
+      TestTiles_3: 8162042947993326546
+      TestTiles_4: -1187715476678314565
+      TestTiles_5: -1072019392603869768
+      TestTiles_6: 3537593948222098919
+      TestTiles_7: 6635711285763287986
+      TestTiles_8: -3130838254023652856
+      TestTiles_9: 5540668031973657387
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

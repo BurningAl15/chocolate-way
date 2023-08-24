@@ -5,6 +5,11 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using TMPro;
 
+public enum Direction
+{
+    NoDirection, Up, Down, Right, Left
+}
+
 public class PlayerController2D_TopDown : MonoBehaviour
 {
     public float moveSpeed;
@@ -27,6 +32,8 @@ public class PlayerController2D_TopDown : MonoBehaviour
     [SerializeField] ParticleSystem particleSystem;
     [SerializeField] Animator keyboardAnimator;
 
+    [SerializeField] Direction direction = Direction.NoDirection;
+
 
     // public event Action OnEncountered;
 
@@ -41,6 +48,99 @@ public class PlayerController2D_TopDown : MonoBehaviour
     public void HandleUpdate()
     {
         Movement();
+    }
+
+    public void HandleUpdate(Direction _)
+    {
+        if (GameManager._instance.gameState == GameState.Playing)
+        {
+            if (_ != Direction.NoDirection)
+                Movement(_);
+            else
+                keyboardAnimator.SetInteger("ButtonPressed", -1);
+        }
+    }
+
+    float CheckMobileDirection_Horizontal(Direction _)
+    {
+        if (_ == Direction.Left)
+            return -1;
+        else if (_ == Direction.Right)
+            return 1;
+        else
+            return 0;
+    }
+
+    float CheckMobileDirection_Vertical(Direction _)
+    {
+        if (_ == Direction.Down)
+            return -1;
+        else if (_ == Direction.Up)
+            return 1;
+        else
+            return 0;
+    }
+
+    void Movement(Direction _)
+    {
+        if (!isMoving)
+        {
+            direction = _;
+            // input.x = Input.GetAxisRaw("Horizontal");
+            // input.y = Input.GetAxisRaw("Vertical");
+            input.x = CheckMobileDirection_Horizontal(_);
+            input.y = CheckMobileDirection_Vertical(_);
+
+            //W
+            if (direction == Direction.Up)
+                keyboardAnimator.SetInteger("ButtonPressed", 0);
+            // else if (direction == Direction.NoDirection)
+            //     keyboardAnimator.SetInteger("ButtonPressed", -1);
+            //S
+            else if (direction == Direction.Down)
+                keyboardAnimator.SetInteger("ButtonPressed", 3);
+            // else if (direction == Direction.NoDirection)
+            //     keyboardAnimator.SetInteger("ButtonPressed", -1);
+            //A
+            else if (direction == Direction.Left)
+                keyboardAnimator.SetInteger("ButtonPressed", 1);
+            // else if (direction == Direction.NoDirection)
+            //     keyboardAnimator.SetInteger("ButtonPressed", -1);
+            //D
+            else if (direction == Direction.Right)
+                keyboardAnimator.SetInteger("ButtonPressed", 2);
+            // else if (direction == Direction.NoDirection)
+            //     keyboardAnimator.SetInteger("ButtonPressed", -1);
+
+            //No Diagonal Movement
+            if (input.x != 0) input.y = 0;
+
+            if (input != Vector2.zero)
+            {
+                // anim.SetFloat("moveX", input.x);
+                // anim.SetFloat("moveY", input.y);
+
+                var targetPos = transform.position;
+                targetPos.x += input.x;
+                targetPos.y += input.y;
+
+                // Debug.DrawLine(playerPos.position,targetPos,Color.green);
+
+                if (isWalkable(targetPos))
+                {
+                    SaveDirection._instance.AddDirection(targetPos);
+                    if (currentCoroutine == null)
+                    {
+                        currentCoroutine = StartCoroutine(Move(targetPos));
+                    }
+                }
+                else
+                {
+                    SoundManager._instance.PlaySound(SoundType.Player_Error);
+                }
+            }
+        }
+        // anim.SetBool("isMoving", isMoving);
     }
 
     void Movement()
