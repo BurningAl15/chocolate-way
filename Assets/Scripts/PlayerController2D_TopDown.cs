@@ -23,8 +23,6 @@ public class PlayerController2D_TopDown : MonoBehaviour
     [SerializeField] private float collisionRadius;
     [SerializeField] private LayerMask collisionMask;
 
-    // [SerializeField] private LayerMask battleMask;
-
     private Transform playerPos;
 
     [SerializeField] TextMeshPro textSteps;
@@ -33,6 +31,7 @@ public class PlayerController2D_TopDown : MonoBehaviour
     [SerializeField] Animator keyboardAnimator;
 
     [SerializeField] Direction direction = Direction.NoDirection;
+    [SerializeField] AnimationCurve animCurve;
 
 
     // public event Action OnEncountered;
@@ -216,7 +215,9 @@ public class PlayerController2D_TopDown : MonoBehaviour
         TilesetManager._instance.SetWalked(new Vector3Int(Mathf.FloorToInt(targetPos.x), Mathf.FloorToInt(targetPos.y), 0));
         UpdateSteps();
         playerPos.position = targetPos;
-        anim.SetTrigger("Animate");
+        // anim.SetTrigger("Animate");
+        yield return StartCoroutine(AnimateWobble());
+
         particleSystem.Play();
         isMoving = false;
         // yield return CheckForEncounters();
@@ -237,11 +238,25 @@ public class PlayerController2D_TopDown : MonoBehaviour
 
         UpdateSteps();
         playerPos.position = targetPos;
-        anim.SetTrigger("Animate");
+        // anim.SetTrigger("Animate");
+        yield return StartCoroutine(AnimateWobble());
         particleSystem.Play();
         isMoving = false;
         // yield return CheckForEncounters();
         currentCoroutine = null;
+    }
+
+    IEnumerator AnimateWobble()
+    {
+        float animationTime = .25f;
+        float baseSize = 1f;
+        for (float i = 0; i < animationTime; i += Time.deltaTime)
+        {
+            playerPos.localScale = Vector2.one * animCurve.Evaluate(i/animationTime);
+            yield return null;
+        }
+        playerPos.localScale = Vector2.one * animCurve.Evaluate(1);
+        yield return null;
     }
 
     public void ResetMovement()

@@ -7,6 +7,7 @@ public class ResetGame : Button_Parent
     protected override void DelayedAction()
     {
         base.DelayedAction();
-        SceneUtils.ResetLevel();
+        // SceneUtils.ResetLevel();
+        SceneUtils.ToLevelSelection();
     }
 }
