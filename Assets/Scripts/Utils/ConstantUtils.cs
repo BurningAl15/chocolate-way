@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConstantUtils : MonoBehaviour
+public static class ConstantUtils
 {
     public static readonly string splashScreen = "SplashScreen";
     public static readonly string startView = "1. StartView";

@@ -32,9 +32,8 @@ public class SFXElement
         source.pitch = pitch;
     }
 }
-public class AudioMixerManager : MonoBehaviour
+public class AudioMixerManager : MonoSingleton<AudioMixerManager>
 {
-    public static AudioMixerManager _instance;
     [SerializeField] private AudioMixer mixer;
 
     private bool isMusicOn = true;
@@ -88,14 +87,6 @@ public class AudioMixerManager : MonoBehaviour
         CallSFX(SFXType.PopUp);
     }
 
-    private void Awake()
-    {
-        if (_instance == null)
-            _instance = this;
-        else if (_instance != null)
-            Destroy(this.gameObject);
-    }
-
     public void LoadSoundIndex(bool _, float sfx, float background)
     {
         if (_)
@@ -135,7 +126,7 @@ public class AudioMixerManager : MonoBehaviour
 
     public void SaveMusicIndex()
     {
-        SaveController._instance.SaveSound(sfxIndex, backgroundIndex);
+        // SaveController._instance.SaveSound(sfxIndex, backgroundIndex);
     }
 
     public void AddSFXVolume()

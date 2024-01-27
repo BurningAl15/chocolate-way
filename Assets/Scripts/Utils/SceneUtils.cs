@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using UnityEngine.SceneManagement;
+using AldhaDev.Managers;
 
 public static class SceneUtils
 {

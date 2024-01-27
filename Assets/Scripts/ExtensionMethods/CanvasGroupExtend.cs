@@ -1,17 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public static class CanvasGroupExtend
+namespace AldhaDev.ExtensionMethods
 {
-    public static void CanvasGroupFade(this CanvasGroup canvasGroup,float _alpha)
+    public static class CanvasGroupExtend
     {
-        canvasGroup.alpha = _alpha;
-    }
+        public static void CanvasGroupFade(this CanvasGroup canvasGroup,float alpha)
+        {
+            canvasGroup.alpha = alpha;
+        }
 
-    public static void CanvasGroupInteractable(this CanvasGroup canvasGroup, bool canInteract)
-    {
-        canvasGroup.interactable=canInteract;
-        canvasGroup.blocksRaycasts = canInteract;
+        public static void CanvasGroupInteractable(this CanvasGroup canvasGroup, bool canInteract)
+        {
+            canvasGroup.interactable=canInteract;
+            canvasGroup.blocksRaycasts = canInteract;
+        }
     }
 }

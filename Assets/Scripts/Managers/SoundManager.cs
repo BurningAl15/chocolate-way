@@ -1,51 +1,47 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum SoundType
+namespace AldhaDev.Managers
 {
-    ClickUI,
-    Player_Error,
-    Player_Move,
-
-}
-
-[Serializable]
-public class Sound
-{
-    public SoundType soundType;
-    public AudioSource source;
-}
-
-public class SoundManager : MonoBehaviour
-{
-    public static SoundManager _instance;
-
-    [SerializeField] List<Sound> sounds = new List<Sound>();
-
-    Dictionary<SoundType, Sound> soundDictionary = new Dictionary<SoundType, Sound>();
-
-    private void Awake()
+    public enum SoundType
     {
-        _instance = this;
-        for (int i = 0; i < sounds.Count; i++)
-        {
-            soundDictionary.Add(sounds[i].soundType, sounds[i]);
-        }
+        ClickUI,
+        Player_Error,
+        Player_Move,
     }
 
-    public void PlaySound(SoundType soundType)
+    [Serializable]
+    public class Sound
     {
-        Sound temp;
-        if (soundDictionary.TryGetValue(soundType, out temp))
-        {
-            temp.source.Play();
-        }
+        public SoundType soundType;
+        public AudioSource source;
     }
 
-    public void PlaySound_UI()
+    public class SoundManager : MonoSingleton<SoundManager>
     {
-        PlaySound(SoundType.ClickUI);
+        [SerializeField] List<Sound> sounds = new List<Sound>();
+
+        private readonly Dictionary<SoundType, Sound> _soundDictionary = new Dictionary<SoundType, Sound>();
+
+        protected override void Awake()
+        {
+            base.Awake();
+            foreach (var t in sounds)
+            {
+                _soundDictionary.Add(t.soundType, t);
+            }
+        }
+
+        public void PlaySound(SoundType soundType)
+        {
+            if (_soundDictionary.TryGetValue(soundType, out Sound temp))
+                temp.source.Play();
+        }
+
+        public void PlaySound_UI()
+        {
+            PlaySound(SoundType.ClickUI);
+        }
     }
 }

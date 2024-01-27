@@ -1,72 +1,82 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
 using TMPro;
+using UnityEngine;
 
-public class Timer : MonoBehaviour
+namespace AldhaDev.Timer
 {
-    DateTime currentAction;
-    long ticks;
-    [SerializeField] TextMeshProUGUI actionTimer;
-
-    [SerializeField] Vector3Int offsetTime;
-    public bool isCooldownActive = false;
-
-    public void Init()
+    public class Timer : MonoBehaviour
     {
-        actionTimer.text = "";
-    }
+        [SerializeField] TextMeshProUGUI actionTimer;
+        public float totalTime = 60.0f; // Tiempo total en segundos
 
-    public void StartCooldown()
-    {
-        currentAction = DateTime.Now + new TimeSpan(offsetTime.x, offsetTime.y, offsetTime.z);
-        ticks = currentAction.Ticks;
-        actionTimer.text = GetTimeDifference(currentAction);
-    }
+        [SerializeField] private Color normal;
+        [SerializeField] private Color hurryUp;
 
-    public void UpdateCooldown()
-    {
-        // get the ticks from the string
-        // long ticks = long.Parse(cooldownString);
+        public float duration = 10f;  // Default duration
+        public bool isRunning;
 
-        // calculate the time remaining in the cooldown
-        TimeSpan timeRemaining = new DateTime(ticks) - DateTime.Now;
+        private bool _isHurry;
 
-        // check if there is time left in the cooldown
-        if (timeRemaining.Ticks > 0)
+        private bool _hasFinished;
+
+        public bool hasFinished => _hasFinished;
+
+        public void Init()
         {
-            // cooldown has time remaining
-            int days = timeRemaining.Days;
-            int hours = timeRemaining.Hours;
-            int mins = timeRemaining.Minutes;
-            int seconds = timeRemaining.Seconds;
-
-            //
-            // do something here to update game for this cooldown
-            //
-            actionTimer.text = GetTimeDifference(hours, mins, seconds, days);
+            actionTimer.text = "";
+            actionTimer.color = normal;
         }
-        else
+
+        private void UpdateTimerText()
         {
-            // cooldown is done
-            // StopCooldown(cooldownName);
-            actionTimer.text = "Time Up!";
-            isCooldownActive = true;
-            //
-            // do something here to update game for this cooldown
-            //
+            int minutes = Mathf.FloorToInt(duration / 60);
+            int seconds = Mathf.FloorToInt(duration % 60);
+            string timeLiteral = $"{minutes:00}:{seconds:00}";
+            actionTimer.text = timeLiteral;
         }
-    }
+    
+        // public void StartTimer(float waitTime = 0f, Action action = null)
+        public void StartTimer()
+        {
+            duration = totalTime;
+            // actionToExecute = action;
+            isRunning = true;
+            UpdateTimerText();
+        }
 
-    string GetTimeDifference(DateTime _)
-    {
-        return _.ToString("H:mm:ss");
-    }
+        public void StopTimer() => isRunning = false;
 
-    string GetTimeDifference(int hours, int mins, int seconds, int day = 0)
-    {
-        DateTime temp = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, hours, mins, seconds);
-        return temp.ToString("H:mm:ss");
+        public void TogglePause(bool isTimerRunning) => this.isRunning = isTimerRunning;
+
+        public void ResetTimer()
+        {
+            StopTimer();
+            duration = totalTime;
+        }
+
+        public void UpdateTimer()
+        {
+            if (!isRunning) return;
+            if (duration < 0)
+            {
+                _hasFinished = true;
+                actionTimer.text = $"<b> Time Up! </b>";
+                isRunning = false;
+            }
+            else
+            {
+                if (duration <= (totalTime / 3) && !_isHurry)
+                {
+                    actionTimer.color = hurryUp;
+                    _isHurry = true;
+                }
+                UpdateTimerText();
+            }
+            duration -= Time.deltaTime;
+
+            // if (actionToExecute != null)
+            // {
+            //     actionToExecute();
+            // }
+        }
     }
 }

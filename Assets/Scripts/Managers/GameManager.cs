@@ -1,200 +1,199 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using AldhaDev.ExtensionMethods;
 using TMPro;
+using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace AldhaDev.Managers
 {
-    public static GameManager _instance;
-    public GameState gameState = GameState.Initialize;
+    using Timer;
+    using ScriptableObjects;
+    using Player.TopDown;
 
-    [SerializeField] PlayerController2D_TopDown player;
-    [SerializeField] Timer timer;
-
-    [SerializeField] CanvasGroup pauseMenu;
-    [SerializeField] CanvasGroup gameMenu;
-    [SerializeField] CanvasGroup selectLevelMenu;
-    [SerializeField] SelectLevel selectLevel;
-
-    [SerializeField] CanvasGroup gameOverMenu;
-
-    [SerializeField] List<string> goodMessages = new List<string>();
-    [SerializeField] string badMessage;
-    [SerializeField] string[] endMessages = new string[2];
-    [SerializeField] TextMeshProUGUI messageUI;
-    [SerializeField] TextMeshProUGUI endMessageUI;
-    [SerializeField] ContainerLimits containerLimits;
-
-    bool isPaused = false;
-
-    Coroutine currentCoroutine = null;
-
-    [SerializeField] AnimationCurve animationCurve;
-
-    void Awake()
+    public class GameManager : MonoSingleton<GameManager>
     {
-        _instance = this;
-    }
+        public GameState gameState = GameState.Initialize;
 
-    void Start()
-    {
-        if (currentCoroutine == null)
-            currentCoroutine = StartCoroutine(StartGame());
-    }
+        [Header("Player")]
+        [SerializeField] PlayerController2D_TopDown player;
+    
+        [Header("Timer")]
+        [SerializeField] Timer timer;
 
-    IEnumerator StartGame()
-    {
-        selectLevel.Select_Level(PlayerPrefs.GetInt("level_index"));
-      
-        pauseMenu.CanvasGroupFade(0);
-        pauseMenu.CanvasGroupInteractable(false);
+        [Header("Menus")]
+        [SerializeField] CanvasGroup pauseMenu;
+        [SerializeField] CanvasGroup gameMenu;
+        [SerializeField] SelectLevel selectLevel;
 
-        gameMenu.CanvasGroupFade(0);
-        gameMenu.CanvasGroupInteractable(false);
+        [SerializeField] CanvasGroup gameOverMenu;
 
-        gameOverMenu.CanvasGroupFade(0);
-        gameOverMenu.CanvasGroupInteractable(false);
+        [Header("Messages")]
+        [SerializeField] List<string> goodMessages = new List<string>();
+        [SerializeField] string badMessage;
+        [SerializeField] string[] endMessages = new string[2];
+        [SerializeField] TextMeshProUGUI messageUI;
+        [SerializeField] TextMeshProUGUI endMessageUI;
+    
+        [SerializeField] RectTransform containerTransform;
+        [SerializeField] ContainerLimitsAsset containerLimits;
 
-        selectLevelMenu.CanvasGroupFade(1);
-        selectLevelMenu.CanvasGroupInteractable(true);
+        private bool _isRunning = true;
 
-        containerLimits.Init();
+        private Coroutine _currentCoroutine;
 
-        yield return StartCoroutine(TransitionManager._instance.FadeOut());
+        [SerializeField] AnimationCurve animationCurve;
 
-        //Here we wait for the selection of the level
-        yield return new WaitUntil(() => selectLevel.isLevelSelected);
-
-        TilesetManager._instance.Init();
-        yield return null;
-        player.Init();
-
-        float maxTime = .5f;
-
-        for (float i = 0; i < maxTime; i += Time.deltaTime)
+        private void Start()
         {
-            selectLevelMenu.CanvasGroupFade(animationCurve.Evaluate((maxTime - i) / maxTime));
-            gameMenu.CanvasGroupFade(animationCurve.Evaluate(i / maxTime));
-            yield return null;
+            _currentCoroutine ??= StartCoroutine(StartGame());
         }
-        selectLevelMenu.CanvasGroupFade(0);
-        gameMenu.CanvasGroupFade(1);
 
-        selectLevelMenu.CanvasGroupInteractable(false);
-        gameMenu.CanvasGroupInteractable(true);
-
-        timer.StartCooldown();
-        gameState = GameState.Playing;
-        currentCoroutine = null;
-    }
-
-    public void PauseGame()
-    {
-        isPaused = !isPaused;
-        if (currentCoroutine == null)
-            currentCoroutine = StartCoroutine(Pause(isPaused));
-    }
-
-    IEnumerator Pause(bool _)
-    {
-        print("Pause:" + _);
-        // float maxTime = _ ? 1 : 0;
-        float maxTime = .5f;
-
-        if (_)
+        private IEnumerator StartGame()
         {
-            gameState = GameState.Paused;
+            timer.Init();
+            selectLevel.Select_Level(PlayerPrefs.GetInt("level_index"));
+
+            pauseMenu.CanvasGroupFade(0);
+            pauseMenu.CanvasGroupInteractable(false);
+
+            gameMenu.CanvasGroupFade(0);
+            gameMenu.CanvasGroupInteractable(false);
+
+            gameOverMenu.CanvasGroupFade(0);
+            gameOverMenu.CanvasGroupInteractable(false);
+
+            containerTransform.TranslateToPosition(containerLimits.InitialPoint);
+
+            Countdown.Current.InitWithFade();
+            yield return StartCoroutine(TransitionManager.Current.FadeOut());
+        
+            //Here we wait for the selection of the level
+            yield return new WaitUntil(() => selectLevel.isLevelSelected);
+
+            TilesetManager.Current.Init();
+            player.Init();
+
+            float maxTime = .5f;
 
             for (float i = 0; i < maxTime; i += Time.deltaTime)
             {
-                pauseMenu.CanvasGroupFade(animationCurve.Evaluate(i / maxTime));
+                gameMenu.CanvasGroupFade(animationCurve.Evaluate(i / maxTime));
                 yield return null;
             }
-            pauseMenu.CanvasGroupFade(1);
-            pauseMenu.CanvasGroupInteractable(true);
-        }
-        else
-        {
-            for (float i = maxTime; i > 0; i -= Time.deltaTime)
-            {
-                pauseMenu.CanvasGroupFade(animationCurve.Evaluate(i / maxTime));
-                yield return null;
-            }
-            pauseMenu.CanvasGroupFade(0);
-            pauseMenu.CanvasGroupInteractable(false);
+            gameMenu.CanvasGroupFade(1);
+
+            gameMenu.CanvasGroupInteractable(true);
+        
+            yield return StartCoroutine(Countdown.Current.CountDown());
+        
             gameState = GameState.Playing;
+            yield return null;
+            timer.StartTimer();
+            _currentCoroutine = null;
         }
 
-        currentCoroutine = null;
-    }
-
-    void Update()
-    {
-        if (gameState == GameState.Playing)
+        public void PauseGame()
         {
-            player.HandleUpdate();
-            timer.UpdateCooldown();
+            _isRunning = !_isRunning;
+            _currentCoroutine ??= StartCoroutine(Pause(_isRunning));
+        }
 
-            if (timer.isCooldownActive)
+        private IEnumerator Pause(bool _)
+        {
+            const float maxTime = .5f;
+
+            timer.TogglePause(_);
+            if (!_)
             {
-                EndGame(true);
-                print("Game Finished");
+                gameState = GameState.Paused;
+
+                for (float i = 0; i < maxTime; i += Time.deltaTime)
+                {
+                    pauseMenu.CanvasGroupFade(animationCurve.Evaluate(i / maxTime));
+                    yield return null;
+                }
+                pauseMenu.CanvasGroupFade(1);
+                pauseMenu.CanvasGroupInteractable(true);
+            }
+            else
+            {
+                for (float i = maxTime; i > 0; i -= Time.deltaTime)
+                {
+                    pauseMenu.CanvasGroupFade(animationCurve.Evaluate(i / maxTime));
+                    yield return null;
+                }
+                pauseMenu.CanvasGroupFade(0);
+                pauseMenu.CanvasGroupInteractable(false);
+                gameState = GameState.Playing;
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape))
+            _currentCoroutine = null;
+        }
+
+        private void Update()
+        {
+            if (gameState == GameState.Playing)
             {
-                PauseGame();
+                player.HandleUpdate();
+                timer.UpdateTimer();
+
+                if (timer.hasFinished)
+                    EndGame(true);
+
+                if (Input.GetKeyDown(KeyCode.Escape))
+                    PauseGame();
             }
         }
-    }
 
-    public void EndGame(bool hasHurryUp = false)
-    {
-        gameState = GameState.GameOver;
-        if (currentCoroutine == null)
-            currentCoroutine = StartCoroutine(End_Game(hasHurryUp));
-    }
-
-    IEnumerator End_Game(bool hasHurryUp)
-    {
-        if (hasHurryUp)
+        public void EndGame(bool hasHurryUp = false)
         {
-            messageUI.text = badMessage;
-            endMessageUI.text = endMessages[0];
-        }
-        else
-        {
-            string temp = goodMessages[Random.Range(0, goodMessages.Count)];
-            messageUI.text = temp;
-            endMessageUI.text = temp;
+            gameState = GameState.GameOver;
+            _currentCoroutine ??= StartCoroutine(End_Game(hasHurryUp));
         }
 
-        //
-        gameMenu.CanvasGroupInteractable(false);
-        float maxTime = .5f;
-        yield return null;
-
-        for (float i = 0; i < maxTime; i += Time.deltaTime)
+        IEnumerator End_Game(bool hasHurryUp)
         {
-            containerLimits.MoveToMid(animationCurve.Evaluate(i / maxTime));
+            timer.TogglePause(true);
+
+            if (hasHurryUp)
+            {
+                messageUI.text = badMessage;
+                endMessageUI.text = endMessages[0];
+            }
+            else
+            {
+                string temp = goodMessages[Random.Range(0, goodMessages.Count)];
+                messageUI.text = temp;
+                endMessageUI.text = temp;
+            }
+
+            gameMenu.CanvasGroupInteractable(false);
+            const float maxTime = .5f;
             yield return null;
-        }
 
-        yield return new WaitForSeconds(2f);
+            for (float i = 0; i < maxTime; i += Time.deltaTime)
+            {
+                containerTransform.TranslateLerp_Vector3(containerLimits.InitialPoint,containerLimits.MidPoint,i/maxTime,animationCurve);
+                yield return null;
+            }
 
-        for (float i = 0; i < maxTime; i += Time.deltaTime)
-        {
-            containerLimits.MoveToEnd(animationCurve.Evaluate(i / maxTime));
-            yield return null;
-        }
+            yield return new WaitForSeconds(2f);
+            // Make an animation here
 
-        //Menu Appearing
-        for (float i = 0; i < maxTime; i += Time.deltaTime)
-        {
-            gameOverMenu.CanvasGroupFade(animationCurve.Evaluate(i / maxTime));
-            yield return null;
+            for (float i = 0; i < maxTime; i += Time.deltaTime)
+            {
+                containerTransform.TranslateLerp_Vector3(containerLimits.MidPoint,containerLimits.EndPoint,i/maxTime,animationCurve);
+                yield return null;
+            }
+
+            //Menu Appearing
+            for (float i = 0; i < maxTime; i += Time.deltaTime)
+            {
+                gameOverMenu.CanvasGroupFade(animationCurve.Evaluate(i / maxTime));
+                yield return null;
+            }
+            gameOverMenu.CanvasGroupInteractable(true);
+            _currentCoroutine = null;
         }
-        gameOverMenu.CanvasGroupInteractable(true);
-        currentCoroutine = null;
     }
 }

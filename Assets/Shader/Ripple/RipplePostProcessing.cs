@@ -1,51 +1,46 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Serialization;
 
-public class RipplePostProcessing : MonoBehaviour
+namespace AldhaDev.VFX
 {
-    public static RipplePostProcessing _instance;
-
-    [FormerlySerializedAs("RippleMaterial")] public Material rippleMaterial;
-    [FormerlySerializedAs("MaxAmount")] public float maxAmount = 50f;
-    [FormerlySerializedAs("Friction")] [Range(0,1)] public float friction = .9f;
-    private float amount = 0f;
-
-    private void Awake()
+    public class RipplePostProcessing : MonoSingleton<RipplePostProcessing>
     {
-        if (_instance == null)
-            _instance = this;
-        else
-            Destroy(this.gameObject);
-    }
+        [FormerlySerializedAs("RippleMaterial")] public Material rippleMaterial;
+        [FormerlySerializedAs("MaxAmount")] public float maxAmount = 50f;
+        [FormerlySerializedAs("Friction")] [Range(0,1)] public float friction = .9f;
+        private float _amount = 0f;
+        private static readonly int Amount = Shader.PropertyToID("_Amount");
+        private static readonly int CenterX = Shader.PropertyToID("_CenterX");
+        private static readonly int CenterY = Shader.PropertyToID("_CenterY");
+
+        void Update()
+        {
+            this.rippleMaterial.SetFloat(Amount, this._amount);
+            this._amount *= this.friction;
+        }
+
+        void OnRenderImage(RenderTexture src, RenderTexture dst)
+        {
+            Graphics.Blit(src, dst, this.rippleMaterial);
+        }
     
-    void Update()
-    {
-        this.rippleMaterial.SetFloat("_Amount", this.amount);
-        this.amount *= this.friction;
-    }
+        #region Utils
 
-    void OnRenderImage(RenderTexture src, RenderTexture dst)
-    {
-        Graphics.Blit(src, dst, this.rippleMaterial);
-    }
-    
-    #region Utils
+        public void CallRipple(Vector2 pos)
+        {
+            this._amount = this.maxAmount;
+            this.rippleMaterial.SetFloat(CenterX, pos.x);
+            this.rippleMaterial.SetFloat(CenterY, pos.y);
+        }
 
-    public void CallRipple(Vector2 pos)
-    {
-        this.amount = this.maxAmount;
-        this.rippleMaterial.SetFloat("_CenterX", pos.x);
-        this.rippleMaterial.SetFloat("_CenterY", pos.y);
-    }
+        public void CallRipple(Vector2 pos, float maxAmount)
+        {
+            this._amount = maxAmount;
+            this.rippleMaterial.SetFloat(CenterX, pos.x);
+            this.rippleMaterial.SetFloat(CenterY, pos.y);
+        }
 
-    public void CallRipple(Vector2 pos, float _maxAmount)
-    {
-        this.amount = _maxAmount;
-        this.rippleMaterial.SetFloat("_CenterX", pos.x);
-        this.rippleMaterial.SetFloat("_CenterY", pos.y);
+        #endregion
     }
-
-    #endregion
 }
+

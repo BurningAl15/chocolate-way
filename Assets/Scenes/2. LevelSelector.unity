@@ -285,7 +285,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -904,7 +904,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1320,7 +1320,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1466,7 +1466,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2017,7 +2017,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2973,7 +2973,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3246,7 +3246,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3392,7 +3392,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3538,7 +3538,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3920,7 +3920,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4336,7 +4336,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4617,7 +4617,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4898,7 +4898,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5044,7 +5044,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5259,7 +5259,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5649,7 +5649,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5832,7 +5832,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6113,7 +6113,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6259,7 +6259,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6503,7 +6503,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7371,7 +7371,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7525,7 +7525,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7806,7 +7806,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7914,7 +7914,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8360,7 +8360,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 29289396880672155}
         m_TargetAssemblyTypeName: SelectLevelManager, Assembly-CSharp
-        m_MethodName: Select_Level
+        m_MethodName: Select_Level_Coroutine
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
